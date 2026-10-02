@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Personnage animé</title>
+<meta name="description" content="Un personnage animé : le regard suit le pointeur, il cligne des yeux, bouge la tête, la bouche et le nez.">
+<style>
+:root{--bg:#000;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+html,body{height:100%;margin:0;background:var(--bg)}
+body{display:flex;align-items:center;justify-content:center;overflow:hidden}
+canvas{display:block;width:min(100vw,calc(100vh * 445.3 / 439.3));aspect-ratio:445.3 / 439.3;height:auto;max-width:100%}
+#probe{position:absolute;width:0;height:0;overflow:hidden}
+</style>
+</head>
+<body>
+<canvas id="c" aria-label="Un personnage stylisé dont les yeux suivent le pointeur et dont la tête, la bouche, les sourcils et le nez bougent légèrement"></canvas>
+<svg id="probe" xmlns="http://www.w3.org/2000/svg"><path id="pp"/></svg>
+<script>
+const D={"vb":[-70.2,-70.2,445.3,439.3],"k":3.511,"faces":[{"h":"M304.12,129.62c-3.06-23.51-26.79-39.26-49.5-37.5,1.9-26.02-10.4-51.97-30.31-68.3C193.65-1.31,147.54-8,112.13,10.73c-31.06,17.91-51.29,69-47.04,103.84.32,2.29,3.87,1.79,3.49-.53-2.92-25.32,6.16-51.44,19.03-73.07C113.83-6.84,183.72-5.22,221.84,26.78c19.76,16.19,31.44,42.28,28.63,67.69.09,1.1,1.05,1.92,2.15,1.83,20.96-1.95,43.12,12.54,45.17,34.19,3.44,20.75-16.37,40.02-36.31,33.4-.83-.3-1.77-.36-2.68-.09-2.44.69-3.74,3.33-2.88,5.7,18.99,58.78-29.86,97.76-79.19,117.44-12.45,4.6-25.76,7.07-38.8,5.61-13.23-1.91-26.93-3.9-39.41-8.2-6.1-2.2-12.4-5.16-15.63-9.97-4.05-5.7.87-12.54-.51-18.88-1.79-13.37-14.44-23.45-8.17-36.58,9.13,3.05,18.56,4.53,27.97,5.47,20.23,1.74,40.45,1.5,60.6-1.42,30.4-4.75,59.03-27.22,63.58-58.81,3.63-20.41-1.17-41.24-9.31-59.71-.39-.9-1.44-1.3-2.33-.91-.89.39-1.3,1.44-.9,2.33,7.97,18.07,12.54,38.2,9.07,57.67-7.93,44.45-50.04,58.96-90.46,58.32-19.71.2-40.2-.42-58.9-6.9-.92-.36-1.97.11-2.3,1.05-.02.05-.03.1-.04.16,0,0,0,0,0,.02-3.57,6.44-3.55,14.88-.44,21.45,2.8,6.53,6.54,12.2,7.12,18.39.37,3.15-.2,6.33-1.04,9.39-2.21,7.89,3.73,15.68,10.25,19.25,9.16,5.39,19.64,7.86,29.82,10.05,6.83,1.36,13.36,2.59,20.39,3.59,14.16,1.8,28.47-.7,41.62-5.34,26.12-10.01,50.64-24.35,69.39-45.48,17.34-19.87,24-48.18,17.96-73.85,22.81,1.54,42.48-20.77,37.89-44.02Z","g":[64.5,0.0,240.3,298.9],"m":null,"c":"M203.63,108.48c-4.8-15.37,15.07-25.13,24.31-11.95,1.27,1.96-1.72,3.88-2.97,1.91-6.96-9.72-21.46-2.58-18.01,8.86.8,2.19-2.55,3.39-3.33,1.19h0Z","cc":[215.6,100.0],"n":"M46.71,132c-.09-.47,20.91-.1,20.91-.1,0,0-5,5.96-6.83,15.97-1.83,10-2.4,29.44,2.12,37.9,4.52,8.47,8.75,13.37,15.1,11.64,6.35-1.73,13.08-8.75,3.56-16.35-9.52-7.6-17.32-10.68-17.51-17.6-.19-6.93,4.23-10.49,8.08-11.16,3.85-.67,15.07-.96,16.42-.48.1.58-9.4,7.31-8.24,12.6,1.15,5.29,3.08,11.93,7.12,16.45,4.04,4.52,6.35,8.66,6.06,11.35-.29,2.69-1.06,6.35-6.64,7.41-5.58,1.06-15.6.4-21.45-1.06-14.92-3.73-26.89,5.79-30.25,6.66,0,0,17.71-39.17,11.55-73.23Z","np":[64.3,131.8],"b":["M3.25,75.73c6.37-7.96,18.82-9.58,27.33-3.62,3.88,2.75-.54,8.4-4.14,5.28-5.66-5.32-15.3-5.14-21.11.3-1.25,1.21-3.2-.64-2.08-1.96h0Z","M91.81,69.6c7.14-6.14,18.45-7.26,27.18-1.81,3.87,2.56-.27,8.2-3.87,5.25-5.44-4.71-14.83-5.56-21.58-1.17-1.43,1-3.08-1.17-1.73-2.27h0Z"],"bc":[[17.5,73.4],[105.9,69.1]],"e":[{"p":"M38.31,98.93L39.78,103.16L40.86,107.68L41.54,113.21L41.6,117.84L41.19,122.26L40.36,126.43L39.11,130.28L37.5,133.76L35.53,136.82L33.24,139.38L30.65,141.41L27.81,142.83L24.72,143.6L21.54,143.66L18.42,143.02L15.4,141.73L12.53,139.84L9.83,137.4L7.37,134.46L5.17,131.06L3.29,127.25L1.75,123.08L0.61,118.59L0,114.48L3.65,111.3L8.58,107.79L12.77,105.38L18.26,102.88L23.99,100.96L28.69,99.87L33.48,99.19Z","u":[21.18,117.92,6.12,8.99,171.99],"y":98.93},{"p":"M125.65,103.45L126.15,108.93L126.05,113.5L125.5,117.84L124.53,121.91L123.16,125.65L121.42,128.99L119.34,131.89L116.95,134.28L114.27,136.11L111.34,137.32L108.2,137.86L105.03,137.68L101.94,136.82L98.96,135.32L96.15,133.25L92.7,129.65L90.41,126.4L88.42,122.72L86.76,118.66L85.48,114.28L84.63,109.61L84.25,104.97L84.34,100.5L85.06,95.2L89.87,94.55L94.72,94.34L99.55,94.54L105.54,95.38L111.41,96.84L115.98,98.44L121.46,100.99Z","u":[105.73,110.53,6.13,8.99,171.98],"y":94.34}]}]};
+const [VX,VY,VW,VH]=D.vb,K=D.k,WHITE="#fff",CYAN="#47ffe4",SEED=38;
+let BG="#000";const bgq=new URLSearchParams(location.search).get("bg");
+if(/^(transparent|[0-9a-f]{3,8})$/i.test(bgq||"")){BG=bgq==="transparent"?bgq:"#"+bgq;document.documentElement.style.setProperty("--bg",BG)}
+const REST=location.hash==="#rest",AMP=REST?0:(matchMedia("(prefers-reduced-motion: reduce)").matches?.5:1);
+const cv=document.getElementById("c"),ctx=cv.getContext("2d"),pp=document.getElementById("pp");
+function fit(){const d=devicePixelRatio||1;cv.width=Math.round(cv.clientWidth*d);cv.height=Math.round(cv.clientWidth*d*VH/VW)}
+addEventListener("resize",fit);fit();
+const rng=a=>()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296};
+function sample(d){pp.setAttribute("d",d);const L=pp.getTotalLength(),n=Math.ceil(L/(.5*K)),o=[];for(let i=0;i<=n;i++){const p=pp.getPointAtLength(L*i/n);o.push(p.x,p.y)}return o}
+const P2=d=>d?new Path2D(d):null,ss=(a,b,x)=>{x=(x-a)/(b-a);return x<=0?0:x>=1?1:x*x*(3-2*x)},env=(t,T)=>t<0?0:Math.pow(Math.sin(Math.PI*t/T),2);
+const F=D.faces.map((f,i)=>{const r=rng(SEED*977+13+i);return{f,r,ec:[(f.e[0].u[0]+f.e[1].u[0])/2,(f.e[0].u[1]+f.e[1].u[1])/2],head:sample(f.h),mouth:f.m?sample(f.m):null,nose:P2(f.n),cheek:P2(f.c),brows:f.b.map(P2),
+  eyes:f.e.map(e=>({hull:P2(e.p),u:e.u,y:e.y})),ph:Array.from({length:14},()=>r()*6.283),gx:0,gy:0,tx:0,ty:0,
+  nS:r()*2,nB:1+r()*4,bl:-1,dbl:0,nBr:3+r()*5,br:-1,brS:0,nSn:4+r()*6,sn:-1,nSm:3+r()*5,sm:-1}});
+let ptr=[0,0],pt=-9;
+function mv(e){const r=cv.getBoundingClientRect();ptr=[VX+(e.clientX-r.left)/r.width*VW,VY+(e.clientY-r.top)/r.height*VH];pt=(performance.now()-t0)/1e3}
+addEventListener("pointermove",mv);addEventListener("pointerdown",mv);document.documentElement.addEventListener("pointerleave",()=>{pt=-9});
+function step(o,t,dt){const r=o.r;
+  if(t-pt<3.5){const dx=ptr[0]-o.ec[0],dy=ptr[1]-o.ec[1],d=Math.hypot(dx,dy)||1,m=Math.min(1,d/(.26*VH));o.tx=dx/d*m;o.ty=dy/d*m;o.nS=t+.6}
+  else if(t>=o.nS){if(r()<.3){o.tx=0;o.ty=.15}else{o.tx=r()*2-1;o.ty=(r()*2-1)*.8}o.nS=t+1.2+r()*2.8}
+  const k=1-Math.exp(-dt*22);o.gx+=(o.tx-o.gx)*k;o.gy+=(o.ty-o.gy)*k;
+  if(o.bl<0&&t>=o.nB)o.bl=0;
+  if(o.bl>=0){o.bl+=dt;if(o.bl>.17){o.bl=-1;if(!o.dbl&&r()<.15){o.dbl=1;o.nB=t+.12}else{o.dbl=0;o.nB=t+2.5+r()*4}}}
+  if(o.br<0&&t>=o.nBr){o.br=0;o.brS=Math.floor(r()*3)}
+  if(o.br>=0){o.br+=dt;if(o.br>.9){o.br=-1;o.nBr=t+4+r()*6}}
+  if(o.sn<0&&t>=o.nSn)o.sn=0;
+  if(o.sn>=0){o.sn+=dt;if(o.sn>.35){o.sn=-1;o.nSn=t+5+r()*7}}
+  if(o.sm<0&&t>=o.nSm)o.sm=0;
+  if(o.sm>=0){o.sm+=dt;if(o.sm>1.6){o.sm=-1;o.nSm=t+5+r()*6}}}
+function draw(o,t){const f=o.f,p=o.ph,S=Math.sin,A=AMP,a=AMP*K,g=f.g,cx=g[0]+g[2]/2,piv=[cx,g[1]+g[3]*.8];
+  const ang=(2.4*S(.43*t+p[0])+1.2*S(.17*t+p[1])+.6*o.gx)*A*Math.PI/180,sx=.6*a*S(.29*t+p[2]),sy=.5*a*S(.23*t+p[3]);
+  const px=a*(1.3*S(.21*t+p[4])+.5*o.gx),py=a*(.8*S(.17*t+p[5])+.3*o.gy);
+  const mx=a*.35*S(.7*t+p[6]),mw=a*.35*S(.5*t+p[7]),my=a*(.4*S(.9*t+p[8])+.2*S(2.1*t+p[9])),sm=env(o.sm,1.6)*a;
+  const warp=(x,y)=>{const u=(x-cx)/(g[2]/2),w=ss(.42,.72,(y-g[1])/g[3]);return[x+w*(mx+u*mw),y+w*(my-sm*.9*(.5+.5*u))]};
+  ctx.save();ctx.translate(piv[0]+sx,piv[1]+sy);ctx.rotate(ang);ctx.translate(-piv[0],-piv[1]);
+  const sn=env(o.sn,.35),sa=sn*a;ctx.save();ctx.translate(px*1.9+.15*sa*S(t*40),py*1.9-.35*sa);ctx.translate(f.np[0],f.np[1]);ctx.scale(1+.05*sn*A,1+.05*sn*A);ctx.translate(-f.np[0],-f.np[1]);
+  ctx.fillStyle=CYAN;ctx.fill(o.nose);ctx.restore();
+  ctx.fillStyle=WHITE;
+  for(const pts of o.mouth?[o.head,o.mouth]:[o.head]){const q=new Path2D();for(let i=0;i<pts.length;i+=2){const w=warp(pts[i],pts[i+1]);i?q.lineTo(w[0],w[1]):q.moveTo(w[0],w[1])}q.closePath();ctx.fill(q,"evenodd")}
+  if(o.cheek){const a=warp(f.cc[0],f.cc[1]);ctx.save();ctx.translate(px*.8+a[0]-f.cc[0],py*.8+a[1]-f.cc[1]);ctx.fill(o.cheek);ctx.restore()}
+  const bl=o.bl>=0?env(o.bl,.17):0,be=env(o.br,.9);
+  o.brows.forEach((b,i)=>{const c=f.bc[i],sel=(o.brS===0||o.brS===i+1)?be:0,up=1.1*sel*a;ctx.save();ctx.translate(px+c[0],py-up+.5*a*S(.5*t+p[10+i])+.4*bl*a+c[1]);
+    ctx.rotate((1.5*A*S(.4*t+p[12+i])-1.5*sel*A*(i?1:-1))*Math.PI/180);ctx.translate(-c[0],-c[1]);ctx.fill(b);ctx.restore()});
+  for(const e of o.eyes){ctx.save();ctx.translate(px*1.15,py*1.15);ctx.translate(0,e.y);ctx.scale(1,1-.86*bl*A);ctx.translate(0,-e.y);
+    ctx.fillStyle=WHITE;ctx.fill(e.hull);ctx.clip(e.hull);ctx.fillStyle="#000";ctx.beginPath();
+    const u=e.u;ctx.ellipse(u[0]+o.gx*2.1*K+.12*a*S(9*t+p[2]),u[1]+o.gy*1.6*K+.1*a*S(7*t+p[3]),u[2],u[3],u[4]*Math.PI/180,0,6.2832);ctx.fill();ctx.restore()}
+  ctx.restore()}
+let t0=performance.now(),last=0,paused=false,tp=0,vis=true;
+if("IntersectionObserver"in window)new IntersectionObserver(e=>{vis=e[0].isIntersecting}).observe(cv);
+function frame(now){requestAnimationFrame(frame);if(paused||!vis)return;const t=(now-t0)/1e3,dt=Math.min(.05,t-last);last=t;
+  const s=cv.width/VW;ctx.setTransform(s,0,0,s,-VX*s,-VY*s);if(BG==="transparent")ctx.clearRect(VX,VY,VW,VH);else{ctx.fillStyle=BG;ctx.fillRect(VX,VY,VW,VH)}
+  for(const o of F){if(AMP)step(o,t,dt);draw(o,REST?0:t)}}
+requestAnimationFrame(frame);
+function toggle(){if(paused){t0=performance.now()-tp*1e3;paused=false}else{tp=last;paused=true}}
+cv.addEventListener("dblclick",toggle);addEventListener("keydown",e=>{if(e.code==="Space"){e.preventDefault();toggle()}});
+</script>
+</body>
+</html>
